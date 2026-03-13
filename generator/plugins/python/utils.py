@@ -680,9 +680,7 @@ class TypesCodeGenerator:
         class_lines = [
             "" if class_name == "LSPObject" else "@attrs.define",
             "@functools.total_ordering" if class_name == "Position" else "",
-            f"{class_name} = object"
-            if class_name == "LSPObject"
-            else f"class {class_name}:",
+            f"class {class_name}:",
             f'{indent}"""{doc}"""' if struct_def.documentation else "",
         ]
         class_lines += _get_since(struct_def, indent)
