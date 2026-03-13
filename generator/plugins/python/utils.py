@@ -392,10 +392,6 @@ class TypesCodeGenerator:
                 f"{indent}if not isinstance(o, Position):",
                 f"{indent}{indent}return NotImplemented",
                 f"{indent}return (self.line, self.character) == (o.line, o.character)",
-                "def __gt__(self, o: 'Position') -> bool:",
-                f"{indent}if not isinstance(o, Position):",
-                f"{indent}{indent}return NotImplemented",
-                f"{indent}return (self.line, self.character) > (o.line, o.character)",
                 "def __repr__(self) -> str:",
                 f"{indent}" + "return f'{self.line}:{self.character}'",
             ]
@@ -678,8 +674,9 @@ class TypesCodeGenerator:
         class_name = struct_def.name
 
         class_lines = [
-            "" if class_name == "LSPObject" else "@attrs.define",
-            "@functools.total_ordering" if class_name == "Position" else "",
+            "@attrs.define(order=True)"
+            if class_name == "Position"
+            else "@attrs.define",
             f"class {class_name}:",
             f'{indent}"""{doc}"""' if struct_def.documentation else "",
         ]

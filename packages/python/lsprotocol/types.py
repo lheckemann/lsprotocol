@@ -5197,8 +5197,7 @@ class Color:
     """The alpha component of this color in the range [0-1]."""
 
 
-@attrs.define
-@functools.total_ordering
+@attrs.define(order=True)
 class Position:
     """Position in a text document expressed as zero-based line and character
     offset. Prior to 3.17 the offsets were always based on a UTF-16 string
@@ -5243,11 +5242,6 @@ class Position:
         if not isinstance(o, Position):
             return NotImplemented
         return (self.line, self.character) == (o.line, o.character)
-
-    def __gt__(self, o: "Position") -> bool:
-        if not isinstance(o, Position):
-            return NotImplemented
-        return (self.line, self.character) > (o.line, o.character)
 
     def __repr__(self) -> str:
         return f"{self.line}:{self.character}"
