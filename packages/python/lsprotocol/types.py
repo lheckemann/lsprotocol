@@ -5145,6 +5145,19 @@ class Range:
     def __repr__(self) -> str:
         return f"{self.start!r}-{self.end!r}"
 
+    def __contains__(self, position: object) -> bool:
+        if not isinstance(position, Position):
+            raise TypeError("Ranges can only contain Positions")
+        return self.start <= position <= self.end
+
+    def includes(self, inner: "Range") -> bool:
+        "Returns whether `inner` is contained within `self`."
+        return self.start <= inner.start and inner.end <= self.end
+
+    def overlaps(self, other: "Range") -> bool:
+        "Returns whether `self` and `other` overlap."
+        return self.start <= other.end and other.start <= self.end
+
 
 @attrs.define
 class WorkspaceFoldersChangeEvent:

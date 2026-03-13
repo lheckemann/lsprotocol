@@ -403,6 +403,16 @@ class TypesCodeGenerator:
                 f"{indent}return (self.start == o.start) and (self.end == o.end)",
                 "def __repr__(self) -> str:",
                 f"{indent}" + "return f'{self.start!r}-{self.end!r}'",
+                "def __contains__(self, position: object) -> bool:",
+                f"{indent}if not isinstance(position, Position):",
+                f"{indent}{indent}raise TypeError('Ranges can only contain Positions')",
+                f"{indent}return self.start <= position <= self.end",
+                "def includes(self, inner: 'Range') -> bool:",
+                f"{indent}'Returns whether `inner` is contained within `self`.'",
+                f"{indent}return self.start <= inner.start and inner.end <= self.end",
+                "def overlaps(self, other: 'Range') -> bool:",
+                f"{indent}'Returns whether `self` and `other` overlap.'",
+                f"{indent}return self.start <= other.end and other.start <= self.end",
             ]
         if class_name == "Location":
             return [
